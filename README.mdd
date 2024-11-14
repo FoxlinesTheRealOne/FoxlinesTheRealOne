@@ -1,0 +1,96 @@
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+local Window = OrionLib:MakeWindow({Name = "FoxyHub", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
+local Tab = Window:MakeTab({
+    Name = "Hub 1",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+local Section = Tab:AddSection({
+    Name = "Prison life"
+})
+
+OrionLib:MakeNotification({
+	Name = "Message from the creator!",
+	Content = "This is a message from the creator thank you for using our content and our script love the owner (we did make half of the script not me the owner but my friend please take credits to my friend by the way I do not support using this you can get banned most likely not SOME SCRIPTS ARENT OURS)",
+	Image = "rbxassetid://4483345998",
+	Time = 5
+})
+
+Tab:AddButton({
+    Name = "Rxge hub!",
+    Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/L1ghtyL1ght/script/refs/heads/main/script.lua"))()
+      end    
+})
+Tab:AddButton({
+    Name = "Rxge hub!",
+    Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/L1ghtyL1ght/script/refs/heads/main/script.lua"))()
+      end    
+})
+
+local Tab = Window:MakeTab({
+	Name = "Scripts",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local Section = Tab:AddSection({
+	Name = "Scripts (some are not ours)"
+})
+
+Tab:AddButton({
+	Name = "Prizz life!",
+	Callback = function()
+      		loadstring(game:HttpGet('https://raw.githubusercontent.com/elliexmln/PrizzLife/main/pladmin.lua'))()
+  	end    
+})
+
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+local Window = OrionLib:MakeWindow({Name = "FoxyHub", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
+local Tab = Window:MakeTab({
+    Name = "Hub 1",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+local Section = Tab:AddSection({
+    Name = "Prison life"
+})
+
+OrionLib:MakeNotification({
+	Name = "Message from the creator!",
+	Content = "This is a message from the creator thank you for using our content and our script love the owner (we did make half of the script not me the owner but my friend please take credits to my friend by the way I do not support using this you can get banned most likely not SOME SCRIPTS ARENT OURS)",
+	Image = "rbxassetid://4483345998",
+	Time = 5
+})
+
+Tab:AddButton({
+    Name = "Rxge hub!",
+    Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/L1ghtyL1ght/script/refs/heads/main/script.lua"))()
+      end    
+})
+
+local Tab = Window:MakeTab({
+	Name = "Scripts",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local Section = Tab:AddSection({
+	Name = "Scripts (some are not ours)"
+})
+
+Tab:AddButton({
+	Name = "Prizz life!",
+	Callback = function()
+      		loadstring(game:HttpGet('https://raw.githubusercontent.com/elliexmln/PrizzLife/main/pladmin.lua'))()
+  	end    
+})
+
+Tab:AddButton({
+	Name = "Chat clear use when your saying bad stuff so you don't get reported!",
+	Callback = function()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/FoxlinesTheRealOne/FoxlinesTheRealOne/a985a54bbb7c75fbe3efdf314e8c2a6456facd7c/README.md'))()
+  	end    
+})
