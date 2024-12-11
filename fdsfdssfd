@@ -1,0 +1,99 @@
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+local Window = Rayfield:CreateWindow({
+   Name = "Panda hub",
+   Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
+   LoadingTitle = "Coded by Icy",
+   LoadingSubtitle = "Please wait for it to load",
+   Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
+
+   DisableRayfieldPrompts = false,
+   DisableBuildWarnings = false, -- Prevents Rayfield from warning when the script has a version mismatch with the interface
+
+   ConfigurationSaving = {
+      Enabled = true,
+      FolderName = nil, -- Create a custom folder for your hub/game
+      FileName = "Panda hub"
+   },
+
+   Discord = {
+      Enabled = true, -- Prompt the user to join your Discord server if their executor supports it
+      Invite = "https://discord.gg/JxKdJzQbNg", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ABCD would be ABCD
+      RememberJoins = true -- Set this to false to make them join the discord every time they load it up
+   },
+
+   KeySystem = true, -- Set this to true to use our key system
+   KeySettings = {
+      Title = "Pandas key system",
+      Subtitle = "Pandas key system",
+      Note = "join discord to get key https://discord.gg/JxKdJzQbNg ", -- Use this to tell the user how to get a key
+      FileName = "Key", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
+      SaveKey = false, -- The user's key will be saved, but if you change the key, they will be unable to use your script
+      GrabKeyFromSite = true, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
+      Key = {"Vh}S,$AjUDK(&cqM2g=X;d_-v%W.6eRQ<8'9NfFw"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
+   }
+})
+
+local Tab = Window:CreateTab("Arsenal scripts📜", nil) -- Title, Image
+
+local Section = Tab:CreateSection("Arsenal scripts")
+
+Rayfield:Notify({
+   Title = "Message from the coder",
+   Content = "Thank you for using Gemz hub",
+   Duration = 6.5,
+   Image = nil,
+})
+
+local Button = Tab:CreateButton({
+   Name = "Sanity (key: KEY_k7DqBcjp2q) must be in game",
+   Callback = function()
+       loadstring(game:HttpGet("https://raw.githubusercontent.com/helldevelopment/RobloxScripts/main/SanityLoader.lua"))() 
+   end,
+})
+
+local Label = Tab:CreateLabel("Welcome To Gemz hub We hope you like the scripts ", nil, Color3.fromRGB(255, 255, 255), false) -- Title, Icon, Color, IgnoreTheme
+
+local Tab = Window:CreateTab("Rivals scripts📜", nil) -- Title, Image
+
+local Section = Tab:CreateSection("Rivals scripts")
+
+local Button = Tab:CreateButton({
+   Name = "Smorgs hub key SmorgGotRivalsKeys28",
+   Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/MIKEDRIPZOWSKU/test/refs/heads/main/SmorgHubRivals.txt", true))()
+   end,
+})
+
+local Tab = Window:CreateTab("Jupiter Florida BETA scripts📜", nil) -- Title, Image
+
+local Section = Tab:CreateSection("Jupiter Florida BETA scripts")
+
+local Button = Tab:CreateButton({
+   Name = "Delivery driver autofarm script",
+   Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Marco8642/science/ok/Jupiter"))()
+   end,
+})
+
+local Tab = Window:CreateTab("driving empire scripts📜", nil) -- Title, Image
+
+local Section = Tab:CreateSection("driving empire scripts")
+
+local Button = Tab:CreateButton({
+   Name = "driving empire script for autofarm and and more",
+   Callback = function()
+        loadstring(game:HttpGet("https://scriptblox.com/raw/AUDI-Driving-Empire-Car-Racing-op-script-15151"))()
+   end,
+})
+
+local Tab = Window:CreateTab("the strongest battle grounds scripts📜", nil) -- Title, Image
+
+local Section = Tab:CreateSection("Op tsp scripts")
+
+local Button = Tab:CreateButton({
+   Name = "JJS gojo only works with saitama",
+   Callback = function()
+        loadstring(game:HttpGet("https://gist.githubusercontent.com/JcBoomin/a63e9ac3e90cef03ecf37e997fd21632/raw/98b567b81f61bb30042e0078b78f3fb24685fb8d/Gojo",true))()
+   end,
+})
