@@ -1,9 +1,85 @@
 if not LPH_OBFUSCATED then
-	getfenv().LPH_NO_VIRTUALIZE = function(Function)
-		return Function
-	end
+	getfenv().LPH_NO_VIRTUALIZE = function(f) return f end
+	getfenv().LPH_JIT_MAX = function(f) return f end
 end
-
+ 
+ 
+ 
+ 
+ 
+LPH_JIT_MAX(function()
+ 
+	local Hooks = {}
+	local Targets = {}
+	local Whitelisted = {
+		{655, 775, 724, 633, 891},
+		{760, 760, 771, 665, 898},
+		{660, 759, 751, 863, 771},
+	}
+ 
+	local function TableEquality(x, y)
+		if (#x ~= #y) then
+			return false
+		end
+ 
+		for i, v in next, x do
+			if (y[i] ~= v) then
+				return false
+			end
+		end
+ 
+		return true
+	end
+ 
+	LPH_NO_VIRTUALIZE(function()
+		for i, v in next, getgc(true) do
+			if (type(v) == "function") then
+				local ScriptTrace, Line = debug.info(v, "sl")
+ 
+				if string.find(ScriptTrace, "PlayerModule.LocalScript") and table.find({42, 51, 61}, Line) then
+					table.insert(Targets, v)
+				end
+			end
+ 
+			if (type(v) == "table") and (rawlen(v) == 19) and getrawmetatable(v) then
+				Targets.__call = rawget(getrawmetatable(v), "__call")
+			end
+		end
+	end)()
+ 
+ 
+	if not (Targets[1] and Targets[2] and Targets[3] and Targets.__call) then
+		warn("Bypass failed to load properly")
+		return
+	end
+ 
+	local ScriptPath = debug.info(Targets[1], "s")
+ 
+	Hooks.debug_info = hookfunction(debug.info, LPH_NO_VIRTUALIZE(function(...)
+		if not checkcaller() and TableEquality({...}, {2, "s"}) then
+			return ScriptPath
+		end
+ 
+		return Hooks.debug_info(...)
+	end))
+ 
+	hookfunction(Targets[1], LPH_NO_VIRTUALIZE(function() end))
+	hookfunction(Targets[2], LPH_NO_VIRTUALIZE(function() end))
+	hookfunction(Targets[3], LPH_NO_VIRTUALIZE(function() end))
+ 
+	Hooks.__call = hookfunction(Targets.__call, LPH_NO_VIRTUALIZE(function(self, ...)
+		if
+			TableEquality(Whitelisted[1], {...}) or
+			TableEquality(Whitelisted[2], {...}) or
+			TableEquality(Whitelisted[3], {...})
+		then
+			return Hooks.__call(self, ...)
+		end
+	end))
+ 
+	task.wait(3)
+ 
+end)()
   
 local Rayfield, Window = loadstring(game:HttpGet(
                                         'https://api.overhub.xyz/public/scripts/script/luckyUI.lua'))()
