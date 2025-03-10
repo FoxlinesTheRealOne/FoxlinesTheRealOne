@@ -1,0 +1,972 @@
+if not LPH_OBFUSCATED then
+	getfenv().LPH_NO_VIRTUALIZE = function(Function)
+		return Function
+	end
+end
+
+  
+local Rayfield, Window = loadstring(game:HttpGet(
+                                        'https://api.overhub.xyz/public/scripts/script/luckyUI.lua'))()
+
+local config = {}
+
+
+local function loadConfig(data)
+    for k, v in pairs(data) do
+        config[k] = v.CurrentValue 
+    end
+end
+
+
+local function getTableKeys(tbl)
+    local keys = {}
+    for key, _ in pairs(tbl) do
+        table.insert(keys, key)
+    end
+    return keys
+end
+
+    
+    local MainT = Window:CreateTab("Main", "clover")
+     
+
+     local overhub = {
+     pv = true,
+     universal = 15,
+     unitoggle = true,
+     blatoggle = true,
+     block = true,
+     blockslider = 1.5,
+    }
+
+    local Tab = Window:CreateTab("Catching", 4483362458) 
+    
+    local Section = Tab:CreateSection("Mags")
+    
+    local Toggle = Tab:CreateToggle({
+       Name = "Mags (legit)",
+       CurrentValue = false,
+       Flag = "Toggleaaaasfbf1", 
+       Callback = function(Value)
+           unitoggle = Value
+           if unitoggle == true then
+               task.wait()
+            local UserInputService = game:GetService("UserInputService")
+    local player = game.Players.LocalPlayer
+    
+    local catchRight
+    repeat
+        catchRight = player.Character and player.Character:FindFirstChild("CatchRight")
+        wait()
+    until catchRight
+    
+    local maxDistance = 50^2
+    
+    UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            local closestDist = maxDistance
+            local closestFootball = nil
+            local playerPos = catchRight.Position
+            for i, v in pairs(game.workspace:GetChildren()) do
+                if v.Name == "Football" and v:IsA("BasePart") then
+                    local dist = (v.Position - playerPos).Magnitude
+                    if dist < closestDist and dist <= universal then
+                        closestDist = dist
+                        closestFootball = v
+                        local steps = 30
+                        for i = 1, steps do
+                        firetouchinterest(game.Players.LocalPlayer.Character["CatchRight"], v, 0)
+                        firetouchinterest(game.Players.LocalPlayer.Character["CatchRight"], v, 0)
+                        task.wait()
+                        firetouchinterest(game.Players.LocalPlayer.Character["CatchRight"], v, 1)
+                        firetouchinterest(game.Players.LocalPlayer.Character["CatchRight"], v, 1)
+                    end
+                end
+            end
+        end
+    end
+    end)
+    else
+               if unitoggle == false then
+                   universal = 0
+    end
+    end
+    end
+     })
+     
+     local Slider = Tab:CreateSlider({
+       Name = "Mags range",
+       Range = {0, 30},
+       Increment = 0.1,
+       Suffix = "Range",
+       CurrentValue = 0,
+       Flag = "Slider1", 
+       Callback = function(Value)
+           if unitoggle == true then
+                   universal = Value
+           else
+               if unitoggle == false then
+                   universal = 0
+            end
+        end
+    end
+    })
+
+local part
+
+
+local function createPart(size)
+    if part then
+        part:Destroy()
+    end
+    part = Instance.new("Part")
+    part.Anchored = true
+    part.CanCollide = false
+    part.Size = Vector3.new(size, size, size)
+    part.Transparency = 0.4
+end
+
+
+local function attachToFootball(football)
+    if football:IsA("BasePart") and part then
+        part.Parent = football
+        part.CFrame = football.CFrame
+    end
+end
+
+
+local function updatePart()
+    if part and part.Parent then
+        part.CFrame = part.Parent.CFrame
+        local football = part.Parent
+        if football and football.Velocity.Magnitude > 0 then
+            part.Rotation = Vector3.new(0, 0, 0)
+        else
+            part.Rotation = football.Rotation
+        end
+    end
+end
+
+
+local Toggle = Tab:CreateToggle({
+   Name = "Show mag hitbox",
+   CurrentValue = false,
+   Flag = "Toggle1",
+   Callback = function(Value)
+       if Value then
+           createPart(universal)
+           for i, v in pairs(game.workspace:GetChildren()) do
+               if v.Name == "Football" then
+                   attachToFootball(v)
+               end
+           end
+           game.workspace.ChildAdded:Connect(function(child)
+               if child.Name == "Football" then
+                   attachToFootball(child)
+               end
+           end)
+           game:GetService("RunService").Heartbeat:Connect(updatePart)
+       else
+           if part then
+               part:Destroy()
+               part = nil
+           end
+       end
+   end,
+})
+
+
+local function onUniversalChanged(newValue)
+    createPart(newValue)
+end
+
+universalChangedConnection = game:GetService("RunService").Heartbeat:Connect(function()
+    if universal ~= lastUniversal then
+        lastUniversal = universal
+        onUniversalChanged(lastUniversal)
+    end
+end)
+    
+
+    local Tab = Window:CreateTab("Physics") 
+
+    local Section = Tab:CreateSection("Reach")
+    
+    local range = blockslider
+    local defaultSize = Vector3.new(0.75, 5, 1.5)
+    
+    local function setBlockSize()
+        if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("BlockPart") then
+            game.Players.LocalPlayer.Character.BlockPart.Size = Vector3.new(range, 5, range)
+        end
+    end
+    
+    local Toggle = Tab:CreateToggle({
+        Name = "Block Reach",
+        CurrentValue = false,
+        Flag = "Toggleraeachvlox1",
+        Callback = function(Value)
+            block = Value
+            if block == true then
+                setBlockSize()
+            else
+                game.Players.LocalPlayer.Character.BlockPart.Size = defaultSize
+                blockslider = 1.5
+            end
+        end
+    })
+    
+    local Slider = Tab:CreateSlider({
+        Name = "Block Reach Distance",
+        Range = {1.5, 20},
+        Increment = 0.1,
+        Suffix = "Range",
+        CurrentValue = 1.5,
+        Flag = "Slidersliderblock1",
+        Callback = function(Value)
+            blockslider = Value
+            range = blockslider
+            if block == true then
+                setBlockSize()
+            end
+        end
+    })
+    
+    local Slider = Tab:CreateSlider({
+        Name = "Block Reach Visibility",
+        Range = {0, 1},
+        Increment = 0.1,
+        Suffix = "Transparency",
+        CurrentValue = 1,
+        Flag = "Slidersliderblock1",
+        Callback = function(Value)
+            if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("BlockPart") then
+            game.Players.LocalPlayer.Character.BlockPart.Transparency = Value
+            end
+        end
+    })
+
+
+local Section = Tab:CreateSection("idk")
+ 
+
+    
+    local track = nil
+    
+     local Toggle = Tab:CreateToggle({
+        Name = "Underground",
+        CurrentValue = false,
+        Flag = "Toggasfsle1", 
+        Callback = function(Value)
+            if Value then
+                local Anim = Instance.new("Animation")
+                Anim.AnimationId = "rbxassetid://182724289"
+                track = game.Players.LocalPlayer.Character.Humanoid:LoadAnimation(Anim)
+                track:Play(.1, 1, 1)
+            local part = Instance.new("Part")
+            part.Size = Vector3.new(500, 0.001, 500)
+            part.CFrame = CFrame.new(Vector3.new(10.3562937, -1.51527438, 30.4708614))
+            part.Anchored = true
+            part.Parent = game.Workspace
+            
+            local model = game:GetService("Workspace").Models.Field.Grass
+            for _, part in pairs(model:GetDescendants()) do
+            if part:IsA("BasePart") then
+            part.CanCollide = false
+            part.Transparency = .5
+            end
+            end
+            else 
+                track:Stop()
+                local model = game:GetService("Workspace").Models.Field.Grass
+                for _, part in pairs(model:GetDescendants()) do
+            if part:IsA("BasePart") then
+                part.Transparency = 0
+                part.CanCollide = true
+            end
+                end
+            end
+    end
+    
+     })
+
+     local Tab = Window:CreateTab("Automatics") 
+
+     local Section = Tab:CreateSection("Captain")
+
+     local Button = Tab:CreateButton({
+        Name = "Finish Captain Race",
+        Callback = function()
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Models.LockerRoomA.FinishLine.CFrame + Vector3.new(0, 2, 0)
+        end
+     })
+
+     local autokick = false 
+
+task.spawn(function()
+
+getgenv().Variables = {}
+
+	Variables.Players = game:GetService("Players")
+	Variables.ReplicatedStorage = game:GetService("ReplicatedStorage")
+	Variables.UserInputService = game:GetService("UserInputService")
+	Variables.Client = Variables.Players.LocalPlayer
+	Variables.Character = Variables.Client.Character or Variables.Client.CharacterAdded:Wait()
+
+	Variables.Client.CharacterAdded:Connect(function(Character)
+		Variables.Character = Character 
+	end)
+
+	local Aimbot = {}
+
+	function Aimbot:GetAccuracyArrow(Arrows)
+		local Y = 0
+		local Arrow1 = nil
+
+		for _, Arrow in pairs(Arrows) do
+			if Arrow.Position.Y.Scale > Y then
+				Y = Arrow.Position.Y.Scale
+				Arrow1 = Arrow 
+			end
+		end
+
+		return Arrow1
+	end
+
+	Variables.Client.PlayerGui.ChildAdded:Connect(function(child)
+		if child.Name == "KickerGui" and autokick == true then
+			local KickerGui = child 
+			local Meter = KickerGui:FindFirstChild("Meter")
+			local Cursor = Meter:FindFirstChild("Cursor")
+			local Arrows = {}
+
+			for i,v in pairs(Meter:GetChildren()) do
+				if string.find(v.Name:lower(), "arrow") then
+					table.insert(Arrows, v)
+				end
+			end 
+
+			repeat task.wait() until Cursor.Position.Y.Scale < 0.02
+			mouse1click()
+			repeat task.wait() until Cursor.Position.Y.Scale >= Aimbot:GetAccuracyArrow(Arrows).Position.Y.Scale + (.03 / (100 / 100))
+			mouse1click()
+		end
+	end)
+end)
+ 
+ local Toggle = Tab:CreateToggle({
+   Name = "Auto Kick",
+   CurrentValue = false,
+   Flag = "Toggle1", 
+   Callback = function(v)
+   	autokick = v
+   end,
+})
+     
+
+    
+    local Tab = Window:CreateTab("Misc") 
+    
+    local Section = Tab:CreateSection("")
+    
+
+     local Button = Tab:CreateButton({
+        Name = "Destory UI",
+        Callback = function()
+            Rayfield:Destroy()
+        end
+     })
+
+     local function beamProjectile(g, v0, x0, t1)
+    local c = 0.5*0.5*0.5;
+    local p3 = 0.5*g*t1*t1 + v0*t1 + x0;
+    local p2 = p3 - (g*t1*t1 + v0*t1)/3;
+    local p1 = (c*g*t1*t1 + 0.5*v0*t1 + x0 - c*(x0+p3))/(3*c) - p2;
+
+    local curve0 = (p1 - x0).Magnitude;
+    local curve1 = (p2 - p3).Magnitude;
+
+    local b = (x0 - p3).Unit;
+    local r1 = (p1 - x0).Unit;
+    local u1 = r1:Cross(b).Unit;
+    local r2 = (p2 - p3).Unit;
+    local u2 = r2:Cross(b).Unit;
+    b = u1:Cross(r1).Unit;
+
+    local cf1 = CFrame.new(
+        x0.x, x0.y, x0.z,
+        r1.x, u1.x, b.x,
+        r1.y, u1.y, b.y,
+        r1.z, u1.z, b.z
+    )
+
+    local cf2 = CFrame.new(
+        p3.x, p3.y, p3.z,
+        r2.x, u2.x, b.x,
+        r2.y, u2.y, b.y,
+        r2.z, u2.z, b.z
+    )
+
+    return curve0, -curve1, cf1, cf2;
+end
+
+
+ local MainSection = MainT:CreateSection("Qb aimbot")
+
+
+
+ local players = game:GetService("Players")
+local userInputService = game:GetService("UserInputService")
+local replicatedStorage = game:GetService("ReplicatedStorage")
+local remotes = replicatedStorage:FindFirstChild("Remotes")
+local characterSoundEvent = remotes:FindFirstChild("CharacterSoundEvent")
+local player = players.LocalPlayer
+local runService = game:GetService("RunService")
+local Players = game:GetService("Players")
+local Mouse = Players.LocalPlayer:GetMouse()
+
+local enabled = false
+local autoAngle = false 
+local highlights1 = false
+local autoChooseThrowType = false 
+local showBeam = false 
+local showCards = false 
+local throwHeightOffset = 0
+local straightenThrowDirection = false 
+local leadDistance = 0 
+local beamColor = Color3.fromRGB(37, 115, 58)
+local throwData = {
+	power = 0,
+	direction = Vector3.new(0, 0, 0),
+	angle = 40
+}
+task.spawn(function()
+	
+	local gui = game:GetObjects("rbxassetid://13795523903")[1]
+	local mouse = loadstring(game:HttpGet("https://raw.githubusercontent.com/Combat537/Mouse-pos-ff2-qb-aimbot/refs/heads/main/Mouse%20pos%20ff2%20qb%20aimbot"))()
+	local mouseRaycastParams = RaycastParams.new()	
+	local usePart = Instance.new("Part")
+	usePart.Anchored = true
+	usePart.CanCollide = false
+	usePart.Size = Vector3.new(2048, 1, 2048)
+	usePart.Transparency = 1
+	usePart.Parent = workspace
+	usePart.Position = player.Character.HumanoidRootPart.Position - Vector3.new(0, 2, 0)
+	mouseRaycastParams.FilterType = Enum.RaycastFilterType.Include
+	mouseRaycastParams.FilterDescendantsInstances = {usePart}
+	mouse:SetRaycastParams(mouseRaycastParams)
+	local throwTypes = {"Dime", "Mag", "Jump", "Bullet", "Slant"}
+	local throwType = "Dime"
+	local beam, a0, a1 = Instance.new("Beam"), Instance.new("Attachment"), Instance.new("Attachment")
+	local hooked = {}
+	local locked = false
+	local target = nil
+	local throwTypeLead = {
+		["Dime"] = 11.5,
+		["Mag"] = 9,
+		["Bullet"] = 6,
+		["Slant"] = 3.5
+	}
+	local throwTypeSwitch = {
+		["Dime"] = "Mag",
+		["Mag"] = "Bullet",
+		["Bullet"] = "Slant",
+		["Slant"] = "Dime"
+	}
+	
+	local __namecall; __namecall = hookmetamethod(game, "__namecall", function(self, ...)
+		local args = {...}
+		if not checkcaller() and hooked[self] and enabled and args[1] == "Clicked" then
+			local nwArgs = {"Clicked", player.Character.Head.Position, player.Character.Head.Position + throwData.direction * 10000, (game.PlaceId == 8206123457 and throwData.power) or 60, throwData.power}
+			return __namecall(self, unpack(nwArgs))
+		end
+		return __namecall(self, ...)
+	end)
+	
+	gui.Parent = game.CoreGui:FindFirstChild("RobloxGui")
+	beam.Parent = workspace.Terrain
+	a0.Parent = workspace.Terrain
+	a1.Parent = workspace.Terrain
+	beam.Attachment0 = a0
+	beam.Attachment1 = a1
+	beam.Segments = 1750
+	beam.Width0 = 1
+	beam.Width1 = 1
+	
+
+	local function getMoveDirection(target)
+		if players:GetPlayerFromCharacter(target) then
+			return target.Humanoid.MoveDirection
+		else
+			return (target.Humanoid.WalkToPoint - target.Head.Position).Unit
+		end
+	end
+	
+	local function checkIsDiagonal()
+		local md = getMoveDirection(target)
+		local absMD = Vector3.new(math.abs(md.X), 0, math.abs(md.Z))
+		local diff = (absMD - Vector3.new(0.7, 0, 0.7)).Magnitude
+		return diff < 0.25
+	end
+	
+	local function checkIsSideways()
+		local md = getMoveDirection(target)
+		return math.abs(md.Z) < math.abs(md.X)
+	end
+	
+	local function checkMovingTowardsQB()
+		local md = getMoveDirection(target)
+		local lastDis = (target.Head.Position - player.Character.Head.Position).Magnitude
+		local nwPos = target.Head.Position + md
+		local nwDis = (nwPos - player.Character.Head.Position).Magnitude
+		local diff = lastDis - nwDis
+		return diff > 0.5
+	end
+	local function findClosestDistanceToDB()
+		local closestDis = math.huge
+		local closestDB = nil
+		for index, player in pairs(players:GetPlayers()) do
+			if player.Team and player.Team == players:GetPlayerFromCharacter(target).Team then continue end
+			if player.Character == target then continue end
+			if player.Character and player.Character:FindFirstChild("Head") then
+				local distance = (player.Character.Head.Position - target.Head.Position).Magnitude
+				if distance < closestDis then
+					closestDis = distance
+					closestDB = player.Character
+				end	
+			end
+		end
+		return closestDis, closestDB
+	end
+	
+	local function findPower(pos)
+		local powerTable = {
+			[10] = 55,
+			[20] = 60,
+			[30] = 65,
+			[35] = 70,
+			[40] = 75,
+			[50] = 80,
+			[60] = 85,
+			[70] = 90,
+			[80] = 95,
+		}
+		local distance = (player.Character.Head.Position - pos).Magnitude
+		local lDiff = math.huge
+		local power = 0
+		local pdistance = nil
+		local reachedDis = 0
+		local nextDis = 0
+		local naturalPower = 0
+		for dis, pwr in pairs(powerTable) do
+			dis *= 3
+			if distance > dis and dis > reachedDis then
+				power = pwr
+				naturalPower = pwr
+				pdistance = dis
+				reachedDis = dis
+				if dis == 90 then nextDis = dis + 15 else nextDis = dis + 30 end
+			end
+		end
+		local diff = math.clamp(nextDis - distance, 0, math.huge)
+		local required = (nextDis - reachedDis)
+		local nextPower = powerTable[nextDis / 3] or 75
+		local percentage = diff / required
+		
+		power += math.clamp((nextPower - power) - ((nextPower - power) * percentage), 0, 100)
+		if power ~= power then
+			power = 50
+		end
+		return power - 5, naturalPower - 5
+	end
+
+	local function calculateVelocity(x0, d0, t)
+		local g = Vector3.new(0, -28, 0)
+		local v0 = (d0 - x0 - 0.5*g*t*t)/t;
+		local dir = ((x0 + v0) - x0).Unit
+		local power = v0.Y / dir.Y
+		return v0, dir, math.clamp(math.round(power), 0, 95)
+	end
+
+	local function findZDirection(at)
+		local zDiff = player.Character.HumanoidRootPart.Position.Z - at.Z
+		local a = 0
+		if zDiff < 0 then
+			a = 1
+		else
+			a = -1
+		end
+		return a	
+	end
+
+	local function straightenMoveDirection(moveDirection, pos)
+		
+		moveDirection = Vector3.new(moveDirection.X, 0, moveDirection.Z)
+		local x = moveDirection.X
+		local z = moveDirection.Z
+		if math.abs(x) > 0.95 then
+			if x ~= math.abs(x) then
+				x = -1
+			else
+				x = 1
+			end
+		else
+			x = 0
+		end
+		if math.abs(z) > 0.95 then
+			if z ~= math.abs(z) then
+				z = -1
+			else
+				z = 1
+			end
+		else
+			z = 0
+		end
+		local md = Vector3.new(x, 0, z)
+		if md.Magnitude <= 0 then
+			md = Vector3.new(0, 0, findZDirection(pos))
+		end
+		return md
+	end
+	
+
+	local function findtarget()
+		local np = nil
+		local nm = math.huge
+		local s = {workspace}
+		if workspace:FindFirstChild("npcwr") then
+			table.insert(s, workspace.npcwr.a)
+			table.insert(s, workspace.npcwr.b)
+		end
+		for i, p in pairs(s) do
+			for i, c in pairs(p:GetChildren()) do
+				if c:FindFirstChildWhichIsA("Humanoid") and c:FindFirstChild("HumanoidRootPart") then
+					local plr = players:GetPlayerFromCharacter(c)
+					if plr == player then continue end
+					if not plr and game.PlaceId ~= 8206123457 then continue end
+					if not player.Neutral then
+						if plr.Team ~= player.Team then
+							continue
+						end
+					end
+					local d = (c.HumanoidRootPart.Position - mouse.Hit.Position).Magnitude
+					if d < nm then
+						nm = d
+						np = c
+					end	
+				end
+			end
+		end
+
+		
+		
+		if np and enabled == true and highlights1 == true then
+        wait(0.1)
+        for _, part in pairs(workspace:GetDescendants()) do
+			if part:IsA("Highlight") then
+				part:Destroy()
+			end
+		end
+			local highlight = Instance.new("Highlight")
+			highlight.Name = "Highlight"
+			highlight.FillColor = Color3.fromRGB(37, 115, 58)
+			highlight.Parent = np
+		end
+		
+
+
+		local playerCharacter = player.Character
+		if playerCharacter then
+			local rootPart = playerCharacter.HumanoidRootPart
+			for _, otherPlayer in ipairs(players:GetPlayers()) do
+				if otherPlayer ~= player then
+					local otherRootPart = otherPlayer.Character and otherPlayer.Character:FindFirstChild("HumanoidRootPart")
+					if otherRootPart then
+						local magnitude = (otherRootPart.Position - rootPart.Position).Magnitude
+						if magnitude < 1 then
+							print(printing)
+						end
+					end
+				end
+			end
+		end
+		
+		return np
+	end
+	
+
+
+	local function beamProjectile(g, v0, x0, t1) 
+		
+		local c = 0.5*0.5*0.5;
+		local p3 = 0.5*g*t1*t1 + v0*t1 + x0;
+		local p2 = p3 - (g*t1*t1 + v0*t1)/3;
+		local p1 = (c*g*t1*t1 + 0.5*v0*t1 + x0 - c*(x0+p3))/(3*c) - p2;
+
+		
+		local curve0 = (p1 - x0).magnitude;
+		local curve1 = (p2 - p3).magnitude;
+
+		
+		local b = (x0 - p3).unit;
+		local r1 = (p1 - x0).unit;
+		local u1 = r1:Cross(b).unit;
+		local r2 = (p2 - p3).unit;
+		local u2 = r2:Cross(b).unit;
+		b = u1:Cross(r1).unit;
+
+		local cf1 = CFrame.new(
+			x0.x, x0.y, x0.z,
+			r1.x, u1.x, b.x,
+			r1.y, u1.y, b.y,
+			r1.z, u1.z, b.z
+		)
+
+		local cf2 = CFrame.new(
+			p3.x, p3.y, p3.z,
+			r2.x, u2.x, b.x,
+			r2.y, u2.y, b.y,
+			r2.z, u2.z, b.z
+		)
+
+		return curve0, -curve1, cf1, cf2;
+	end
+
+	local solveForT = function(target, power, angle)
+		local distance = (target.Head.Position - player.Character.Head.Position).Magnitude
+		local special = {
+			["Bullet"] = function()
+				return distance / 95
+			end,
+			["Fold"] = function()
+				return distance / 105
+			end,
+		}
+		local default = function()
+			local assumedDirection = (target.Head.Position - player.Character.Head.Position).Unit
+			local speed = (assumedDirection * power).Magnitude
+			local t = (distance / speed) * (angle / 22)
+			return t
+		end
+		return (special[throwType] or default)()
+	end
+
+	local solveForAngle = function(distance)
+		local special = {
+			["Bullet"] = function()
+				return 15
+			end,
+					["Fold"] = function()
+				return 25
+			end,
+			["Slant"] = function()
+				return math.clamp(distance / 4, 20, 45)
+			end,
+		}
+		local default = function()
+			return math.clamp(distance / 2.5, 20, 40)
+		end
+		return (special[throwType] or default)()
+	end
+
+	local function hookFootball(f)
+		local remoteEvent = f:WaitForChild("Handle"):WaitForChild("RemoteEvent")
+		hooked[remoteEvent] = true
+	end
+
+	local function initChar(char)
+		char.ChildAdded:Connect(function(c)
+			task.wait()
+			if c:IsA("Tool") then
+				hookFootball(c)
+			end
+		end)
+	end
+	
+	local function findRoute(md)
+		local routeFunctions = {
+			["Dime"] = function()
+				return not checkMovingTowardsQB() and not checkIsSideways() and not checkIsDiagonal()
+			end,
+			["Slant"] = function()
+				return not checkMovingTowardsQB() and checkIsSideways()
+			end,
+			["Fold"] = function()
+				return checkMovingTowardsQB() and checkIsDiagonal()
+			end,
+			["Comeback"] = function()
+				return checkMovingTowardsQB() and not checkIsSideways()
+			end,
+			["Post"] = function()
+				return not checkMovingTowardsQB() and checkIsDiagonal()
+			end,
+			["Still"] = function(md)
+				return md.Magnitude <= 0
+			end,
+		}
+		local route = nil
+		for r, func in pairs(routeFunctions) do
+			route = func(md) and r
+			if route then break end
+		end
+		return route or "Unknown"
+	end
+
+	initChar(player.Character)
+	player.CharacterAdded:Connect(initChar)
+
+	userInputService.InputBegan:Connect(function(input, gp)
+		if player.PlayerGui:FindFirstChild("BallGui") and not gp then
+			if input.KeyCode == Enum.KeyCode.Q then
+				locked = not locked
+			elseif input.KeyCode == Enum.KeyCode.Z then
+				throwType = throwTypeSwitch[throwType]
+			elseif input.KeyCode == Enum.KeyCode.R then
+				while userInputService:IsKeyDown(Enum.KeyCode.R) do
+					throwData.angle += 5
+					throwData.angle = math.clamp(throwData.angle, 5, 90)
+					task.wait(5/30)
+				end
+			elseif input.KeyCode == Enum.KeyCode.F then
+				while userInputService:IsKeyDown(Enum.KeyCode.F) do
+					throwData.angle -= 5
+					throwData.angle = math.clamp(throwData.angle, 5, 90)
+					task.wait(5/30)
+				end
+			end
+		end
+	end)
+	while true do
+		task.wait()
+		local s, e = pcall(function()
+			if not locked then
+				target = findtarget()
+			end
+			gui.Enabled = enabled and showCards and player.PlayerGui:FindFirstChild("BallGui")
+			beam.Enabled = showBeam and enabled and player.PlayerGui:FindFirstChild("BallGui")
+			if player.PlayerGui:FindFirstChild("BallGui") and target and player.Character:FindFirstChild("Head") then
+				local distance = (player.Character.Head.Position - target.Head.Position).Magnitude
+				if autoAngle then
+					throwData.angle = solveForAngle(distance)
+				end
+				if autoChooseThrowType then
+					if checkMovingTowardsQB() and checkIsDiagonal() then
+						throwType = "Fold"
+					elseif not checkIsSideways() and not checkMovingTowardsQB() then
+						local dis = findClosestDistanceToDB()
+						if dis > 5 then
+							throwType = "Dime"
+						else
+							throwType = "Mag"
+						end
+					elseif checkIsSideways() then
+						if distance < 135 then
+							throwType = "Bullet"
+						else
+							throwType = "Slant"
+						end
+					elseif checkMovingTowardsQB() then
+						throwType = "Bullet"
+					else
+						throwType = "Dime"
+					end
+				end
+
+if throwType == "Dime" then
+    throwHeightOffset = -8 else
+    throwHeightOffset = 0
+end
+
+				local moveDirection = (straightenThrowDirection and straightenMoveDirection(getMoveDirection(target), target.Head.Position)) or getMoveDirection(target)
+				local power = findPower(target.Head.Position)
+				local t = solveForT(target, power, throwData.angle)
+				local leadDistance = throwTypeLead[throwType] + leadDistance
+				local predictedPosition = target.Head.Position + Vector3.new(0, throwHeightOffset, 0) + (moveDirection * 20 * t) + moveDirection * leadDistance
+				local _, dir, power = calculateVelocity(player.Character.Head.Position, predictedPosition, t)
+				local c0, c1, cf1, cf2 = beamProjectile(Vector3.new(0, -28, 0), dir * power, player.Character.Head.Position + dir * 5, t * 1.75)
+				beam.CurveSize0 = c0
+				beam.CurveSize1 = c1
+				beam.Color = ColorSequence.new(Color3.fromRGB(37, 115, 58))
+				a0.CFrame = a0.Parent.CFrame:Inverse() * cf1
+				a1.CFrame = a1.Parent.CFrame:Inverse() * cf2
+				gui.Main.AngleCard.Val.Text = math.round(throwData.angle * 100) / 100
+				gui.Main.PowerCard.Val.Text = throwData.power
+				gui.Main.PassDurationCard.Val.Text = tostring(math.round(t * 100) / 100).."s"
+				gui.Main.ModeCard.Val.Text = throwType
+				gui.Main.RouteCard.Val.Text = findRoute(moveDirection)
+				throwData.direction = dir; throwData.power = power
+			end
+		end)
+		if not s then
+			warn(e)
+		end
+	end
+end)
+
+
+local Toggle = MainT:CreateToggle({
+    Name = "Qb aimbot",
+    CurrentValue = false,
+    Flag = "Toggle1", 
+
+    Callback = function(v)
+        enabled = v
+    end,
+ })
+
+ local Toggle = MainT:CreateToggle({
+    Name = "Auto Angle",
+    CurrentValue = false,
+    Flag = "Toggle1", 
+    Callback = function(v)
+        autoAngle = v
+    end,
+ })
+
+ local Toggle = MainT:CreateToggle({
+    Name = "Auto Choose ThrowType",
+    CurrentValue = false,
+    Flag = "Toggle1", 
+    Callback = function(v)
+        autoChooseThrowType = v
+    end,
+ })
+
+ local Toggle = MainT:CreateToggle({
+    Name = "Anti Move Direction",
+    CurrentValue = false,
+    Flag = "Toggle1", 
+    Callback = function(v)
+        print("e "..tostring(v))
+    end,
+ })
+
+ local Toggle = MainT:CreateToggle({
+    Name = "Show Beam",
+    CurrentValue = false,
+    Flag = "Toggle1", 
+    Callback = function(v)
+        showBeam = v
+    end,
+ })
+
+ local Toggle = MainT:CreateToggle({
+    Name = "Show Cards",
+    CurrentValue = false,
+    Flag = "Toggle1", 
+    Callback = function(v)
+        showCards = v
+    end,
+ })
+
+ local Slider = MainT:CreateSlider({
+    Name = "Lead Distance",
+    Range = {-30, 30},
+    Increment = 10,
+    Suffix = "Lead Distance",
+    CurrentValue = 0,
+    Flag = "Slider1", 
+    Callback = function(v)
+        leadDistance = v
+    end,
+ })
